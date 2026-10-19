@@ -1,7 +1,7 @@
 #include "ofMain.h"
 
 // Extract some stuff from Kinect.h...
-// Todo figure out a better way to do this witout too much dependency bulk
+// Todo figure out a better way to do this without too much dependency bulk
 
 #ifndef _HandState_
 #define _HandState_
@@ -139,7 +139,7 @@ typedef struct _JointOrientation
 class Kv2Joint
 {
 public:
-	Kv2Joint(){}
+	Kv2Joint() : trackingState(TrackingState_NotTracked) {}
 	Kv2Joint(const _Joint& kcbPosition, const _JointOrientation& kcbOrientation)
 	{
 		jointOrientation.set(kcbOrientation.Orientation.x, kcbOrientation.Orientation.y, kcbOrientation.Orientation.z, kcbOrientation.Orientation.w);

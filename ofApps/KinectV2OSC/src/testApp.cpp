@@ -19,7 +19,7 @@ void testApp::setup(){
 
 	ofDisableAlphaBlending(); //Kinect alpha channel is default 0;
 
-	//sender.setup("127.0.0.1", 3001);
+	sender.setup("127.0.0.1", 3001);
 	//sender.setup("192.168.225.158", 8000); // Sundar
 	//sender.setup("192.168.225.160", 8000); // Dalma
 	//sender.setup("192.168.225.164", 8000); // Alex
@@ -35,10 +35,10 @@ const string trackingStateNames[] = {
 
 
 const string handStateNames[] = {
-	"unknown"
-	"nottracked"
-	"open"
-	"closed"
+	"unknown",
+	"nottracked",
+	"open",
+	"closed",
 	"lasso"
 };
 
@@ -46,14 +46,13 @@ const string handStateNames[] = {
 const string jointNames[] = {
 	"spinebase",
 	"spinemid",
-	"beck",
+	"neck",
 	"head",
 	"shoulderleft",
 	"elbowleft",
 	"wristleft",
 	"handleft",
 	"shoulderright",
-	"elbowright",
 	"elbowright",
 	"wristright",
 	"handright",
@@ -84,7 +83,7 @@ void testApp::update() {
 		// Bundles just seem to be structural... to the receiver, they remain separate messages
 		vector<Kv2Skeleton> skeletons = kinect.getSkeletons();
 
-		// Interate through skeletons
+		// Iterate through skeletons
 		ofxOscBundle skeletonsBundle; // note the plural!
 
 		int skeletonIndex = 0;
@@ -123,7 +122,7 @@ void testApp::update() {
 				//	JointType jointType = it->first;
 				//	Kv2Joint joint = it->second;
 
-				for (int j = 0; j < 26; j++) {
+				for (int j = 0; j < JointType_Count; j++) {
 					JointType jointType = (JointType)j;
 					Kv2Joint joint = skeleton.joints[jointType];
 
@@ -150,7 +149,7 @@ void testApp::update() {
 					jointTrackingStateMessage.setAddress("/skeletons/" + ofToString(skeletonIndex) + "/joints/" + jointNames[jointType] + "/tracking"); // string state
 					
 					// validation to sidestep some issues here with bogus tracking stats... 
-					int trackingState = ofClamp(joint.getTrackingState(), 0, 3);
+					int trackingState = ofClamp(joint.getTrackingState(), 0, 2);
 					jointTrackingStateMessage.addStringArg(trackingStateNames[trackingState]);
 					USE_BUNDLE ? skeletonBundle.addMessage(jointTrackingStateMessage) : sender.sendMessage(jointTrackingStateMessage);
 					messagesSent++;

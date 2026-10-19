@@ -1,0 +1,48 @@
+{
+  "@context": "https://w3id.org/codemeta/3.1",
+  "@type": "SoftwareSourceCode",
+  "name": "Kinect 2 Starter Kit",
+  "description": "A kit to simplify getting started with the Kinect 2 in openFrameworks.",
+  "author": [
+    {
+      "@type": "Person",
+      "email": "eric@ericmika.com",
+      "name": "Eric Mika",
+      "url": "https://ericmika.com"
+    }
+  ],
+  "keywords": ["kinect", "kinect-v2", "openframeworks", "computer-vision"],
+  "programmingLanguage": "C++",
+  "operatingSystem": ["Windows"],
+  "url": "https://github.com/kitschpatrol/kinect-2-starter-kit",
+  "codeRepository": "https://github.com/kitschpatrol/kinect-2-starter-kit.git",
+  "issueTracker": "https://github.com/kitschpatrol/kinect-2-starter-kit/issues",
+  "license": "https://spdx.org/licenses/MIT",
+  "dateCreated": "2014-06-15",
+  "softwareRequirements": [
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "openFrameworks",
+      "codeRepository": "https://github.com/liquidzym/openFrameworks.git",
+      "url": "https://openframeworks.cc",
+      "version": "0.8.0"
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "ofxKinectV2",
+      "codeRepository": "https://github.com/kitschpatrol/ofxKinectV2.git"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "Kinect for Windows SDK",
+      "url": "https://www.microsoft.com/en-us/download/details.aspx?id=44561",
+      "version": "2.0"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "Visual Studio",
+      "url": "https://visualstudio.microsoft.com/vs/older-downloads/",
+      "version": "2013"
+    }
+  ]
+}

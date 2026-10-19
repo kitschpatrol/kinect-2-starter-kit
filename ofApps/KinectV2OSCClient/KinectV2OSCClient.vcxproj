@@ -113,7 +113,7 @@
     <ClCompile Include="..\..\openFrameworks\addons\ofxOsc\libs\oscpack\src\osc\OscTypes.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="KinectTypes.h" />
+    <ClInclude Include="src\KinectTypes.h" />
     <ClInclude Include="src\ofApp.h" />
     <ClInclude Include="..\..\openFrameworks\addons\ofxOsc\src\ofxOsc.h" />
     <ClInclude Include="..\..\openFrameworks\addons\ofxOsc\src\ofxOscArg.h" />

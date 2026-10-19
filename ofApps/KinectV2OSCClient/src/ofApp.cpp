@@ -14,16 +14,19 @@ TrackingState trackingStateFromOscTrackingStateName(string trackingStateName) {
 			return (TrackingState)i;
 		}
 	}
+
+	ofLog(OF_LOG_WARNING, "Unknown tracking state name: " + trackingStateName);
+	return TrackingState_NotTracked;
 }
 
 
 HandState handStateFromOscHandStateName(string handStateName) {
-	const int handStateCount = 26;
+	const int handStateCount = 5;
 	const string handStateNames[] = {
-		"unknown"
-		"nottracked"
-		"open"
-		"closed"
+		"unknown",
+		"nottracked",
+		"open",
+		"closed",
 		"lasso"
 	};
 
@@ -32,21 +35,23 @@ HandState handStateFromOscHandStateName(string handStateName) {
 			return (HandState)i;
 		}
 	}
+
+	ofLog(OF_LOG_WARNING, "Unknown hand state name: " + handStateName);
+	return HandState_Unknown;
 }
 
 JointType jointTypeFromOscJointName(string jointName) {
-	const int oscJointCount = 26;
+	const int oscJointCount = JointType_Count;
 	const string oscJointNames[] = {
 		"spinebase",
 		"spinemid",
-		"beck",
+		"neck",
 		"head",
 		"shoulderleft",
 		"elbowleft",
 		"wristleft",
 		"handleft",
 		"shoulderright",
-		"elbowright",
 		"elbowright",
 		"wristright",
 		"handright",
@@ -71,6 +76,8 @@ JointType jointTypeFromOscJointName(string jointName) {
 		}
 	}
 
+	ofLog(OF_LOG_WARNING, "Unknown joint name: " + jointName);
+	return JointType_Count;
 }
 
 
@@ -132,10 +139,18 @@ void ofApp::update(){
 			// Extract the skeletons
 			vector<string> addressComponents = ofSplitString(m.getAddress(), "/", true, true);
 
-			if (addressComponents[0] == "skeletons") {
+			if (!addressComponents.empty() && addressComponents[0] == "skeletons") {
+				if (addressComponents.size() < 3) {
+					ofLog(OF_LOG_WARNING, "Skeleton message is missing the skeleton index or message type: " + m.getAddress());
+					continue;
+				}
 
 				// Get index
 				int skeletonIndex = ofToInt(addressComponents[1]);
+				if (skeletonIndex < 0 || skeletonIndex >= (int)skeletons.size()) {
+					ofLog(OF_LOG_WARNING, "Skeleton index out of range: " + m.getAddress());
+					continue;
+				}
 
 				//	map<JointType, Kv2Joint> joints;
 
@@ -144,6 +159,10 @@ void ofApp::update(){
 					skeletons[skeletonIndex].tracked = (m.getArgAsString(0) == "yes");
 				}
 				if (addressComponents[2] == "hands") {
+					if (addressComponents.size() < 4) {
+						ofLog(OF_LOG_WARNING, "Hand message is missing the hand side: " + m.getAddress());
+						continue;
+					}
 					if (addressComponents[3] == "left") {
 						skeletons[skeletonIndex].leftHandState = handStateFromOscHandStateName(m.getArgAsString(0));
 					}
@@ -152,10 +171,18 @@ void ofApp::update(){
 					}
 				}
 				else if (addressComponents[2] == "joints") {
+					if (addressComponents.size() < 5) {
+						ofLog(OF_LOG_WARNING, "Joint message is missing the joint name or value type: " + m.getAddress());
+						continue;
+					}
+
 					// Joint name
 
 					Kv2Joint joint;
 					JointType jointType = jointTypeFromOscJointName(addressComponents[3]);
+					if (jointType == JointType_Count) {
+						continue;
+					}
 					Kv2Joint existingJoint = skeletons[skeletonIndex].joints[jointType];
 
 					// Joint values
@@ -259,16 +286,15 @@ void ofApp::update(){
 void ofApp::draw(){
 
 
+	bool anyHandAboveHead = false;
 	for (int i = 0; i < 6; i++) {
 		
 		if ((skeletons[i].tracked) && (skeletons[i].joints[JointType_HandTipLeft].getPosition().y > skeletons[i].joints[JointType_Head].getPosition().y)) {
-			ofBackground(0);
-		}
-		else {
-			ofBackground(200);
+			anyHandAboveHead = true;
 		}
 
 	}
+	ofBackground(anyHandAboveHead ? 0 : 200);
 
 	ofPushStyle();
 

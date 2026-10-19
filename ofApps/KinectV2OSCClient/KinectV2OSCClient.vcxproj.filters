@@ -146,7 +146,7 @@
     <ClInclude Include="..\..\openFrameworks\addons\ofxOsc\libs\oscpack\src\osc\OscTypes.h">
       <Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
     </ClInclude>
-    <ClInclude Include="KinectTypes.h">
+    <ClInclude Include="src\KinectTypes.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\ofApp.h">
